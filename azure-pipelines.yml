@@ -15,3 +15,5 @@ steps:
     repository: $(imageName)
     command: buildAndPush
     Dockerfile: app/Dockerfile
+    tags: |
+      $(Build.BuildId)
