@@ -8,9 +8,11 @@ import os
 app = Flask('sampleapp')
 c = Counter('requests', 'Number of requests served, by custom_status', ['custom_status'])
 
+success_rate = 40
+
 @app.route('/')
 def hello():
-    if randrange(1, 100) > int(os.environ['SUCCESS_RATE']):
+    if randrange(1, 100) > success_rate:
         c.labels(custom_status = 'bad').inc()
         return "Internal Server Error\n", 500
     else:

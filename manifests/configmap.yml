@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: sampleapp
-data:
-  SUCCESS_RATE: '40'
