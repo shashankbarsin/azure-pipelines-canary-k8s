@@ -13,6 +13,7 @@ spec:
     metadata:
       annotations:
         prometheus.io/scrape: "true"
+        linkerd.io/inject: enabled
       labels:
         app: sampleapp
     spec:
