@@ -5,7 +5,7 @@ metadata:
   labels:
     app: sampleapp
 spec:
-  replicas: 4
+  replicas: 3
   selector:
     matchLabels:
       app: sampleapp
@@ -18,8 +18,7 @@ spec:
     spec:
       containers:
       - name: sampleapp
-        #replace <foobar> with your container registry. Example: contosodemo.azurecr.io
-        image: shasb.azurecr.io/azure-pipelines-canary-k8s
+        image: shashankbarsin/azure-pipelines-canary-k8s
         imagePullPolicy: Always
         ports:
         - containerPort: 8000
