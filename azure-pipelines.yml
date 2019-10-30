@@ -5,7 +5,7 @@ pool:
   vmImage: Ubuntu-16.04
 
 variables:
-  imageName: azure-pipelines-canary-k8s
+  imageName: shashankbarsin/azure-pipelines-canary-k8s
 
 steps:
 - task: Docker@2
