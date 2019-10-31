@@ -3,6 +3,7 @@ trigger:
 
 variables:
   imageName: shashankbarsin/azure-pipelines-canary-k8s
+  vmImage: ubuntu-latest
 
 stages:
 - stage: Build
@@ -11,7 +12,7 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: ubuntu-latest
+      vmImage: $(vmImage)
     steps:
     - task: Docker@2
       displayName: Login
@@ -27,3 +28,47 @@ stages:
         Dockerfile: app/Dockerfile
         tags: |
           $(Build.BuildId)
+- stage: Deployment
+  displayName: Deployment
+  dependsOn: Build
+  jobs:
+  - deployment: Deployment
+    displayName: Deployment
+    pool:
+      vmImage: $(vmImage)
+    environment: shasb.smi
+    strategy:
+      canary:
+        increments: [25, 50]
+        deploy:
+          steps:
+          - task: KubernetesManifest@0
+            displayName: Deploy canary
+            inputs:
+              action: $(strategy.action)
+              namespace: smi
+              strategy: $(strategy.name)
+              trafficSplitMethod: smi
+              percentage: $(strategy.increment)
+              baselineAndCanaryReplicas: 1
+              manifests: manifests/*
+              containers: 'shashankbarsin/azure-pipelines-canary-k8s:$(Build.BuildId)'
+        postRouteTraffic:
+          pool: server
+          steps:
+            - task: Delay@1
+              inputs:
+                delayForMinutes: '2'
+        on:
+          failure:
+            steps:            
+            - script: echo deployment failed...
+            - task: KubernetesManifest@0
+              inputs:
+                action: reject
+                namespace: smi
+                strategy: $(strategy.name)
+                manifests: manifests/*
+          success:
+            steps:
+            - script: echo 'Successfully deployed'
