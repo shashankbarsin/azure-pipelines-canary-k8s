@@ -43,6 +43,8 @@ stages:
         increments: [25, 50]
         deploy:
           steps:
+          - checkout: self
+          - script: ls
           - task: KubernetesManifest@0
             displayName: Deploy canary
             inputs:
