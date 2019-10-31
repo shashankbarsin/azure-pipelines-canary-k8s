@@ -1,0 +1,27 @@
+trigger:
+- master
+
+variables:
+  imageName: shashankbarsin/azure-pipelines-canary-k8s
+
+stages:
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: Build
+    displayName: Build
+    steps:
+    - task: Docker@2
+      displayName: Login
+      inputs:
+        command: login
+        containerRegistry: shasbDockerHub
+    - task: Docker@2
+      displayName: Build and push image
+      inputs:
+        containerRegistry: dockerHub
+        repository: $(imageName)
+        command: buildAndPush
+        Dockerfile: app/Dockerfile
+        tags: |
+          $(Build.BuildId)
