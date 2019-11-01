@@ -6,6 +6,7 @@ pool:
 
 variables:
   imageName: shashankbarsin/azure-pipelines-canary-k8s
+  system.debug: true
 
 steps:
 - task: Docker@2
