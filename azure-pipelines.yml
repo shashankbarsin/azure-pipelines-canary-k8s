@@ -37,7 +37,7 @@ stages:
     displayName: Deployment
     pool:
       vmImage: $(vmImage)
-    environment: retro.retrodemo
+    environment: shasb.allhands
     strategy:
       canary:
         increments: [25, 50]
@@ -48,7 +48,7 @@ stages:
             displayName: Deploy canary
             inputs:
               action: $(strategy.action)
-              namespace: retrodemo
+              namespace: allhands
               strategy: $(strategy.name)
               trafficSplitMethod: smi
               percentage: $(strategy.increment)
@@ -70,7 +70,7 @@ stages:
             - task: KubernetesManifest@0
               inputs:
                 action: reject
-                namespace: retrodemo
+                namespace: allhands
                 strategy: $(strategy.name)
                 manifests: |
                   manifests/deployment.yml
