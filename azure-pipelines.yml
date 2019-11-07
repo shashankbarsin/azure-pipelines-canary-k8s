@@ -37,7 +37,7 @@ stages:
     displayName: Deployment
     pool:
       vmImage: $(vmImage)
-    environment: shasb.allhands
+    environment: shasb.linkerd
     strategy:
       canary:
         increments: [25, 50]
@@ -48,7 +48,7 @@ stages:
             displayName: Deploy canary
             inputs:
               action: $(strategy.action)
-              namespace: allhands
+              namespace: linkerd
               strategy: $(strategy.name)
               trafficSplitMethod: smi
               percentage: $(strategy.increment)
@@ -70,7 +70,7 @@ stages:
             - task: KubernetesManifest@0
               inputs:
                 action: reject
-                namespace: allhands
+                namespace: linkerd
                 strategy: $(strategy.name)
                 manifests: |
                   manifests/deployment.yml
