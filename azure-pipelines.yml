@@ -58,9 +58,21 @@ stages:
         postRouteTraffic:
           pool: server
           steps:
-          - task: Delay@1
+          - task: AutomatedAnalysis@1
             inputs:
-              delayForMinutes: '2'
+              connectedServiceNameARM: 'RMPM'
+              ResourceGroupName: 'shasb'
+              provider: 'Prometheus'
+              endpointUrl: 'http://52.152.99.157:9090/'
+              expressionTemplates: 'sum(rate(requests_total{custom_status="good", $label=~"$value" }[1m]))'
+              templateSubstitutions: 'pod sampleapp-baseline-.* sampleapp-canary-.*'
+              analysisType: 'realtime'
+              windowType: 'sliding'
+              lifetime: '3m'
+              interval: '1m'
+              preprocessor: 'ksigma'
+              classifier: 'mannWhitney'
+              direction: 'DECREASE'
         on:
           failure:
             steps:            
