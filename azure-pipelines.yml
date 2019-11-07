@@ -70,7 +70,7 @@ stages:
             - task: KubernetesManifest@0
               inputs:
                 action: reject
-                namespace: allhands
+                namespace: retrodemo
                 strategy: $(strategy.name)
                 manifests: |
                   manifests/deployment.yml
