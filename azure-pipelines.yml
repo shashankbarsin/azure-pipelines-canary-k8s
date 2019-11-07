@@ -57,6 +57,12 @@ stages:
                 manifests/deployment.yml
                 manifests/service.yml
               containers: 'shashankbarsin/azure-pipelines-canary-k8s:$(Build.BuildId)'
+        postRouteTraffic:
+          pool: server
+          steps:
+          - task: Delay@1
+            inputs:
+              delayForMinutes: '2'
         on:
           failure:
             steps:            
