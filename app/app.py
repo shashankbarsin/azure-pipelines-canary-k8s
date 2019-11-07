@@ -8,7 +8,7 @@ import os
 app = Flask('sampleapp')
 c = Counter('requests', 'Number of requests served, by custom_status', ['custom_status'])
 
-success_rate = 30
+success_rate = 70
 
 @app.route('/')
 def hello():
